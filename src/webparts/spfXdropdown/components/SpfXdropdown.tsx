@@ -27,7 +27,8 @@ export default class SpfXdropdown extends React.Component<ISpfXdropdownProps, IS
   
   private async Save() {
     let web = Web(this.props.webURL);
-    await web.lists.getByTitle("ComboBoxExample").items.add({
+
+    await web.lists.getByTitle("Audit Tool Data").items.add({
       Title: getGUID(),
       SingleValueComboBox: this.state.SingleSelect
       //MultiValueComboBox: { results: this.state.MultiSelect }
@@ -46,7 +47,7 @@ export default class SpfXdropdown extends React.Component<ISpfXdropdownProps, IS
       <div>
         <h1>ComboBox Examples</h1>
         <ComboBox
-          placeholder="Single Select ComboBox..."
+          placeholder="Please Choose"
           selectedKey={this.state.SingleSelect}
           label="Single Select ComboBox"
           autoComplete="on"
