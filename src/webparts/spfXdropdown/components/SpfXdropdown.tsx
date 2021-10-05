@@ -9,51 +9,71 @@ import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
+import { Guid } from '@microsoft/sp-core-library';
 
 var arr = [];
 export interface IStates {
-  SingleSelect: any;
-  MultiSelect: any;
+  medicalSelect: any;
+  assessmentSelect: any;
 }
 
 export default class SpfXdropdown extends React.Component<ISpfXdropdownProps, IStates> {
   constructor(props) {
     super(props);
     this.state = {
-      SingleSelect: "",
-      MultiSelect: []
+      medicalSelect: "",
+      assessmentSelect: ""
     };
   }
   
   private async Save() {
     let web = Web(this.props.webURL);
-
+    //alert('saving '+this.state.medicalSelect);
+    //sp.web.lists.getByTitle("Audit Tool Data").items.add({
+    //  Medical: this.state.medicalSelect
+    //});
     await web.lists.getByTitle("Audit Tool Data").items.add({
       Title: getGUID(),
-      SingleValueComboBox: this.state.SingleSelect
-      //MultiValueComboBox: { results: this.state.MultiSelect }
-    }).then(i => {
-      console.log(i);
+      Medicals: this.state.medicalSelect,
+      Assessment: this.state.assessmentSelect
+      //MultiValueComboBox: { results: this.state.assessmentSelect }
     });
+    //.then(i => {
+    //  console.log(i);
+    //});
     alert("Submitted Successfully");
   }
 
-  public onComboBoxChange = (ev: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
-    this.setState({ SingleSelect: option.key });
+  public onMedicalChange = (ev: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
+    this.setState({ medicalSelect: option.key });
   }
-  
+
+  public onAssessmentChange = (ev: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
+    this.setState({ assessmentSelect: option.key });
+  }
+
   public render(): React.ReactElement<ISpfXdropdownProps> {
     return (
       <div>
         <h1>ComboBox Examples</h1>
+        <div>
         <ComboBox
           placeholder="Please Choose"
-          selectedKey={this.state.SingleSelect}
-          label="Single Select ComboBox"
+          selectedKey={this.state.medicalSelect}
+          label="Medicals"
           autoComplete="on"
-          options={this.props.singleValueChoices}
-          onChange={this.onComboBoxChange}
+          options={this.props.medicalChoices}
+          onChange={this.onMedicalChange}
         />
+        <ComboBox
+          placeholder="Please Choose"
+          selectedKey={this.state.assessmentSelect}
+          label="Assessment"
+          autoComplete="on"
+          options={this.props.assessmentChoices}
+          onChange={this.onAssessmentChange}
+        />
+        </div>
         <div>
           <br />
           <br />

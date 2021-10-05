@@ -1,24 +1,19 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
-
-import {
-  IPropertyPaneConfiguration,
-  PropertyPaneTextField
-} from '@microsoft/sp-property-pane';
+import {IPropertyPaneConfiguration,PropertyPaneTextField} from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
-
 import * as strings from 'SpfXdropdownWebPartStrings';
+
+// ****
 import SpfXdropdown from './components/SpfXdropdown';
 import { ISpfXdropdownProps } from './components/ISpfXdropdownProps';
 import FabricUiComboBox from './components/SpfXdropdown';
-
-// ****
 import { IStackTokens, Stack } from 'office-ui-fabric-react/lib/Stack';
 import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
 
 const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: { width: 300 }
+  dropdown: { width: 100 }
 };
 
 // ** test options
@@ -40,6 +35,7 @@ export interface ISpfXdropdownWebPartProps {
 
 export const getChoiceFields = async (webURL,field) => {
   let resultarr = [];
+  alert(field);
   await fetch(`${webURL}/_api/web/lists/GetByTitle('Audit Tool Data')/fields?$filter=EntityPropertyName eq '${field}'`, {
       method: 'GET',
       mode: 'cors',
@@ -71,7 +67,8 @@ export default class SpfXdropdownWebPart extends BaseClientSideWebPart<ISpfXdrop
       {
         description: this.properties.description,
         webURL:this.context.pageContext.web.absoluteUrl,
-        singleValueChoices: await getChoiceFields(this.context.pageContext.web.absoluteUrl,'Medicals')
+        medicalChoices: await getChoiceFields(this.context.pageContext.web.absoluteUrl,'Medicals'),
+        asessmentChoices: await getChoiceFields(this.context.pageContext.web.absoluteUrl,"Assessment")
       }
     );
 
