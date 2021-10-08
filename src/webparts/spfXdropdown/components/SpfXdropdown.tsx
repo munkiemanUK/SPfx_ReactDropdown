@@ -36,7 +36,6 @@ export default class SpfXdropdown extends React.Component<ISpfXdropdownProps, IS
       Title: getGUID(),
       Medicals: this.state.medicalSelect,
       Assessment: this.state.assessmentSelect
-      //MultiValueComboBox: { results: this.state.assessmentSelect }
     });
     //.then(i => {
     //  console.log(i);
@@ -46,6 +45,7 @@ export default class SpfXdropdown extends React.Component<ISpfXdropdownProps, IS
 
   public onMedicalChange = (ev: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
     this.setState({ medicalSelect: option.key });
+    
   }
 
   public onAssessmentChange = (ev: React.FormEvent<IComboBox>, option?: IComboBoxOption): void => {
@@ -55,7 +55,7 @@ export default class SpfXdropdown extends React.Component<ISpfXdropdownProps, IS
   public render(): React.ReactElement<ISpfXdropdownProps> {
     return (
       <div>
-        <h1>ComboBox Examples</h1>
+        <h1>React JS ComboBox Examples</h1>
         <div>
         <ComboBox
           placeholder="Please Choose"
@@ -65,7 +65,7 @@ export default class SpfXdropdown extends React.Component<ISpfXdropdownProps, IS
           options={this.props.medicalChoices}
           onChange={this.onMedicalChange}
         />
-        <ComboBox
+        <ComboBox className="hidden"
           placeholder="Please Choose"
           selectedKey={this.state.assessmentSelect}
           label="Assessment"

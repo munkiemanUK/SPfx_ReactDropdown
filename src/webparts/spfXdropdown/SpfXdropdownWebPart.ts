@@ -35,7 +35,6 @@ export interface ISpfXdropdownWebPartProps {
 
 export const getChoiceFields = async (webURL,field) => {
   let resultarr = [];
-  alert(field);
   await fetch(`${webURL}/_api/web/lists/GetByTitle('Audit Tool Data')/fields?$filter=EntityPropertyName eq '${field}'`, {
       method: 'GET',
       mode: 'cors',
@@ -49,6 +48,7 @@ export const getChoiceFields = async (webURL,field) => {
       }),
   }).then(async (response) => await response.json())
     .then(async (data) => {
+      console.log(data.value[0].Choices);
       for (var i = 0; i < data.value[0].Choices.length; i++) {              
         resultarr.push({
           key:data.value[0].Choices[i],
@@ -56,7 +56,8 @@ export const getChoiceFields = async (webURL,field) => {
         });
       }
     });
-    return await resultarr;
+    console.log("results="+resultarr);
+    return resultarr;
 };
 
 export default class SpfXdropdownWebPart extends BaseClientSideWebPart<ISpfXdropdownWebPartProps> {
@@ -67,8 +68,8 @@ export default class SpfXdropdownWebPart extends BaseClientSideWebPart<ISpfXdrop
       {
         description: this.properties.description,
         webURL:this.context.pageContext.web.absoluteUrl,
-        medicalChoices: await getChoiceFields(this.context.pageContext.web.absoluteUrl,'Medicals'),
-        asessmentChoices: await getChoiceFields(this.context.pageContext.web.absoluteUrl,"Assessment")
+        assessmentChoices: await getChoiceFields(this.context.pageContext.web.absoluteUrl,'Assessment'),
+        medicalChoices: await getChoiceFields(this.context.pageContext.web.absoluteUrl,'Medicals')
       }
     );
 
